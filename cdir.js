@@ -8,14 +8,14 @@ var stdout = ttys.stdout;
 //
 // shorthand write to stdout
 //
-var write = function write (s) {
+function write (s) {
   stdout.write(s);
 }
 
 //
 // move the cursor upward on the screen
 //
-var up = function up (i, save) {
+function up (i, save) {
 
   i = i || 1;
 
@@ -24,9 +24,9 @@ var up = function up (i, save) {
       write(!save ? '\033[K\033[1A\r' : '\033[1A\r');
     }
   }
-};
+}
 
-var right = function right (i) {
+function right (i) {
 
   i = i || 1;
 
@@ -35,12 +35,12 @@ var right = function right (i) {
       write('\033[1C\r');
     }
   }
-};
+}
 
 //
 // generate whitespace
 //
-var ws = function ws (i, multiplier) {
+function ws (i, multiplier) {
   
   var s = '';
   
@@ -52,9 +52,9 @@ var ws = function ws (i, multiplier) {
     s += ' ';
   }
   return s;
-};
+}
 
-var getType = function getType (o) {
+function getType (o) {
 
   if (typeof o === 'string' || typeof o === 'number' || 
     typeof o === 'boolean' || typeof o === 'function') {
@@ -75,7 +75,7 @@ var getType = function getType (o) {
   else if (({}).toString.call(o) === '[object Object]') {
     return 'object';
   }
-};
+}
 
 //
 // hande cyclical references
@@ -132,7 +132,9 @@ if (typeof JSON.decycle !== 'function') {
 //
 // the main export
 //
-module.exports = function dir (obj, options) {
+module.exports = cdir;
+
+function cdir (obj, options) {
 
   var displayed = 0;
   var copybuffer = 0;
@@ -154,7 +156,7 @@ module.exports = function dir (obj, options) {
   var indent = 0;
   var seed = -1;
 
-  var constructMeta = function constructMeta (parentType, depth, node, itemPrefix, dontPreface) {
+  function constructMeta (parentType, depth, node, itemPrefix, dontPreface) {
 
     itemPrefix = itemPrefix || '';
 
@@ -334,9 +336,9 @@ module.exports = function dir (obj, options) {
       break;
 
     }
-  };
+  }
 
-  var renderMeta = function renderMeta () {
+  function renderMeta () {
 
     displayed = 0;
 
@@ -357,9 +359,9 @@ module.exports = function dir (obj, options) {
 
       }
     }
-  };
+  }
 
-  var toggle = function toggle (index) {
+  function toggle (index) {
 
     var start = selection;
     var stop = meta.length;
@@ -428,9 +430,9 @@ module.exports = function dir (obj, options) {
     up(displayed);
     renderMeta();
     return toggledCount;
-  };
+  }
 
-  var listener = function listener (chunk, key) {
+  function listener (chunk, key) {
 
     //
     // search mode stuff
@@ -646,7 +648,7 @@ module.exports = function dir (obj, options) {
       }
 
     }
-  };
+  }
 
   function raw (mode) {
     var setRawMode = stdin.setRawMode || process.stdin.setRawMode;
@@ -694,4 +696,4 @@ module.exports = function dir (obj, options) {
 
   });
 
-};
+}
