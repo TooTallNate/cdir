@@ -56,23 +56,20 @@ function ws (i, multiplier) {
 
 function getType (o) {
 
-  if (typeof o === 'string' || typeof o === 'number' || 
-    typeof o === 'boolean' || typeof o === 'function') {
+  if (typeof o !== 'object') {
     return typeof o;
   }
-  else if (({}).toString.call(o) === '[object RegExp]') {
-    return 'regexp';
-  }
-  else if (Array.isArray(o)) {
-    return 'array';
-  }
-  else if (typeof o === 'undefined') {
-    return 'undefined';
-  }
-  else if (({}).toString.call(o) === '[object Null]') {
+  if (o === null) {
     return 'null';
   }
-  else if (({}).toString.call(o) === '[object Object]') {
+  var toString = Object.prototype.toString.call(o);
+  if (toString === '[object RegExp]') {
+    return 'regexp';
+  }
+  if (Array.isArray(o)) {
+    return 'array';
+  }
+  if (toString === '[object Object]') {
     return 'object';
   }
 }
